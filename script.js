@@ -197,4 +197,41 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = currentYear >= 2026 ? currentYear : '2026';
   }
 
+  // 6. META PIXEL - INITIATE CHECKOUT TRACKING
+  function trackInitiateCheckout(eventData) {
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'InitiateCheckout', eventData);
+      console.log('[Meta Pixel] InitiateCheckout disparado:', eventData);
+    }
+  }
+
+  // Captura cliques direcionados ao checkout (Cakto ou botões de compra/upsell)
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('a, button');
+    if (!target) return;
+
+    const href = (target.getAttribute('href') || '').toLowerCase();
+    const id = target.id || '';
+    const isCaktoLink = href.includes('cakto');
+    const isCheckoutBtn = ['btn-vip-checkout', 'upsell-accept-link', 'upsell-decline-link'].includes(id);
+    const hasCheckoutAttr = target.hasAttribute('data-checkout');
+
+    if (isCaktoLink || isCheckoutBtn || hasCheckoutAttr) {
+      const itemName = target.getAttribute('data-checkout-item') || target.innerText.trim().replace(/\s+/g, ' ');
+      const rawValue = target.getAttribute('data-checkout-value');
+      
+      const payload = {
+        content_name: itemName || 'Checkout FitPlanilhas',
+        currency: 'BRL'
+      };
+
+      if (rawValue) {
+        payload.value = parseFloat(rawValue);
+      }
+
+      trackInitiateCheckout(payload);
+    }
+  });
+
 });
+

@@ -197,9 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = currentYear >= 2026 ? currentYear : '2026';
   }
 
-  // NOTA: O evento InitiateCheckout é disparado automaticamente pela Cakto
-  // quando o usuário chega na página de checkout (pay.cakto.com.br).
-  // Disparar também aqui causaria duplicação no Meta Events Manager.
-  // O PageView em index.html continua ativo e funcionando normalmente.
+  // TRACKING HOOK — Eventos de conversão e rastreamento
+  // Adicione aqui os eventos do novo Pixel/API (ex: InitiateCheckout, Purchase, Lead)
+  // quando um novo sistema de rastreamento for instalado.
 
 });

@@ -23,6 +23,11 @@
 
   <!-- Meta Pixel Code -->
   <script>
+    // AUDITORIA DE RASTREAMENTO — FitPlanilhas
+    // autoConfig: false  → desativa detecção automática de eventos da Meta
+    //   (elimina SubscribedButtonClick, ViewContent automático e outros
+    //    eventos "Conectado automaticamente" que causam duplicação).
+    // Todos os eventos são disparados manualmente via script.js.
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -31,7 +36,7 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1462274189332452');
+    fbq('init', '1462274189332452', {}, { autoConfig: false });
     fbq('track', 'PageView');
   </script>
   <noscript>
@@ -536,7 +541,7 @@
             <li><span class="check-green">✓</span> <strong>Acesso Vitalício + Novas Atualizações</strong></li>
           </ul>
 
-          <a href="https://pay.cakto.com.br/3bmfxio_1172775" target="_blank" rel="noopener noreferrer" class="plan-action-btn primary-plan-btn animate-pulse-btn" id="btn-vip-checkout">
+          <a href="https://pay.cakto.com.br/3bmfxio_1172775" target="_blank" rel="noopener noreferrer" class="plan-action-btn primary-plan-btn animate-pulse-btn" id="btn-vip-checkout" data-checkout="true" data-checkout-item="Plano Completo VIP" data-checkout-value="27.50">
             QUERO O PACOTE COMPLETO VIP
           </a>
 

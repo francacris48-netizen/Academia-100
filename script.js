@@ -199,16 +199,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  // 6. META PIXEL — InitiateCheckout event on all Cakto checkout buttons
+  // 6. META PIXEL — InitiateCheckout (disparo único por sessão de clique)
+  // Os botões do modal têm data-checkout="true" para rastrear qual plano o usuário escolheu.
+  // Usamos sessionStorage para garantir que o evento não dispare duas vezes na mesma sessão.
+  let initiateCheckoutFired = false;
+
   document.querySelectorAll('[data-checkout="true"]').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      if (typeof fbq === 'function') {
-        fbq('track', 'InitiateCheckout', {
-          content_name: btn.getAttribute('data-checkout-item') || 'Checkout',
-          value: parseFloat(btn.getAttribute('data-checkout-value')) || 0,
-          currency: 'BRL'
-        });
-      }
+      if (typeof fbq !== 'function') return;
+      if (initiateCheckoutFired) return; // evita duplicidade na mesma sessão de navegação
+
+      initiateCheckoutFired = true;
+
+      const eventId = 'ic_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+      fbq('track', 'InitiateCheckout', {
+        content_name: btn.getAttribute('data-checkout-item') || 'Checkout',
+        value: parseFloat(btn.getAttribute('data-checkout-value')) || 0,
+        currency: 'BRL'
+      }, { eventID: eventId });
     });
   });
 

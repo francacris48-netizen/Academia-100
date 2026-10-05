@@ -198,4 +198,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
+
+  // 6. META PIXEL — InitiateCheckout event on all Cakto checkout buttons
+  document.querySelectorAll('[data-checkout="true"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (typeof fbq === 'function') {
+        fbq('track', 'InitiateCheckout', {
+          content_name: btn.getAttribute('data-checkout-item') || 'Checkout',
+          value: parseFloat(btn.getAttribute('data-checkout-value')) || 0,
+          currency: 'BRL'
+        });
+      }
+    });
+  });
+
 });

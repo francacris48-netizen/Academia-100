@@ -197,9 +197,5 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = currentYear >= 2026 ? currentYear : '2026';
   }
 
-  // META PIXEL (ID: 1756669995411955) — Instalado no <head> do index.html
-  // Evento ativo: PageView (disparado automaticamente no carregamento da página)
-  // Para adicionar eventos de conversão (InitiateCheckout, Purchase, Lead, etc.),
-  // use fbq('track', 'NomeDoEvento') nos pontos corretos abaixo:
 
 });

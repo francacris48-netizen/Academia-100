@@ -199,59 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  // ============================================================
-  // 6. META PIXEL — ARQUITETURA DE RASTREAMENTO (AUDITORIA)
-  // ============================================================
-  // REGRAS APLICADAS:
-  //   - autoConfig: false no init (index.html) elimina eventos automáticos
-  //     da Meta (SubscribedButtonClick, ViewContent, etc).
-  //   - Cada botão de checkout registra o listener UMA ÚNICA VEZ.
-  //   - Um Set garante que o mesmo elemento nunca dispare duas vezes.
-  //   - A flag global window.__fbIcFired garante disparo único por pageload,
-  //     mesmo que o DOM seja manipulado dinamicamente no futuro.
-  //   - eventID único por disparo para deduplicação server-side (CAPI).
-  // ============================================================
 
-  (function initPixelTracking() {
-    // Guard: se o módulo já rodou (ex: script carregado 2x), aborta.
-    if (window.__fbTrackingInitialized) return;
-    window.__fbTrackingInitialized = true;
-
-    // Flag de controle: InitiateCheckout só dispara UMA VEZ por pageload.
-    window.__fbIcFired = false;
-
-    // Set de elementos já com listener registrado (evita duplicidade de binding).
-    var boundElements = new Set();
-
-    function fireInitiateCheckout(el) {
-      if (typeof fbq !== 'function') return;
-      if (window.__fbIcFired) return;
-
-      window.__fbIcFired = true;
-
-      // eventID único para deduplicação server-side via CAPI
-      var eventId = 'ic_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-
-      fbq('track', 'InitiateCheckout', {
-        content_name: el.getAttribute('data-checkout-item') || 'Checkout',
-        value: parseFloat(el.getAttribute('data-checkout-value')) || 0,
-        currency: 'BRL'
-      }, { eventID: eventId });
-    }
-
-    function bindCheckoutListeners() {
-      document.querySelectorAll('[data-checkout="true"]').forEach(function(el) {
-        if (boundElements.has(el)) return; // já tem listener — não registra de novo
-        boundElements.add(el);
-        el.addEventListener('click', function() {
-          fireInitiateCheckout(el);
-        });
-      });
-    }
-
-    // Registra listeners nos elementos presentes no DOM agora.
-    bindCheckoutListeners();
-
-  })();
 
 });

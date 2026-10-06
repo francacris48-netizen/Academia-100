@@ -31,7 +31,11 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1462274189332452', {}, { autoConfig: false });
+    
+    // Desativa rastreamento automático de botões (SubscribedButtonClick e microdata)
+    fbq('set', 'autoConfig', false, '1462274189332452');
+    
+    fbq('init', '1462274189332452');
     fbq('track', 'PageView');
   </script>
   <noscript>
